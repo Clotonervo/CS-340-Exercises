@@ -23,3 +23,32 @@ class RetirementCalculator {
     private int getMonthsInLastPosition(Date startDate, Date endDate) { … }
     ...  
 }
+
+1. The single responsibility is violated, because the getTotalYearsOfService() should not be in the calculator class. This should be put in the employee class, unless the business has a lot more complicated in calculating the total years of service, then we would put it in a separate company class. Also the RetirementCalculator should not have an instance variable of employee, but instead should take an employee in its parameters so that it can be generalized to all employees that want to use it.
+
+2. Refactor:
+
+
+class Employee {
+    …
+    private Date employmentStartDate;
+    private Date employmentEndDate;
+
+    private int getTotalYearsOfService(Date startDate, Date endDate) { … }
+    private int getMonthsInLastPosition(Date startDate, Date endDate) { … }
+
+
+}
+
+
+class RetirementCalculator {
+
+    public RetirementCalculator() {}
+
+    public float calculateRetirement(Employee emp) { … }
+    ...  
+}
+
+
+
+

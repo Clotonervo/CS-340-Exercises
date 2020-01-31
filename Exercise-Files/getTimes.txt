@@ -45,3 +45,63 @@ public void getTimes(Properties props) throws Exception {
   departureOffset = value;
 }
 
+
+1. This violates the decomposition principle and duplicate code principle. Also single responability with the variables value and valueString. These values get reused over and over again. There are decompositon issues too, because this problems should be split into multiple parts.
+
+2. Refactor:
+
+public void getTimes(Properties props) throws Exception {
+  String valueString;
+  int value;
+
+  checkInterval = checkInterval();
+  monitorTime = monitorTime(checkInterval);
+  departureOffset = departureOffset(monitorTime);
+
+}
+
+private Integer checkInterval(){
+  getStringProp(valueString, "interval", "monitor interval");
+  return getValueProp(valueString, "monitor interval > 0");
+}
+
+private Integer monitorTime(Integer checkInterval){
+  getStringProp(valueString, "duration", "duration null");
+  monitorTime = getValueProp(valueString, "duration > 0");
+
+  if ((monitorTime % checkInterval) != 0) {
+    throw new MissingPropertiesException("duration % checkInterval");
+  }
+  return monitorTime
+}
+
+private Integer departureOffset(Integer checkInterval){
+  getStringProp(valueString, "departure", "departure offset");
+  departureOffset = getValueProp(valueString, "departure > 0");
+
+  if ((departureOffset % checkInterval) != 0) {
+    throw new MissingPropertiesException("departure % checkInterval");
+  }
+  return departureOffset;
+}
+
+private void getStringProp(String valueString, String property, String error) throws MissingPropertiesException {
+  valueString = props.getProperty(property);
+
+  if (valueString == null) {
+    throw new MissingPropertiesException(error);
+  }
+}
+
+private int getValueProp(String valueString, String error) throws MissingPropertiesException {
+  value = Integer.parseInt(valueString);
+
+  if (value <= 0) {
+    throw new MissingPropertiesException(error);
+  }
+  else {
+    return value;
+  }
+}
+
+

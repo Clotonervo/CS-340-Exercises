@@ -25,3 +25,51 @@ public class Matcher {
         return true;
     }
 }
+
+
+1. This code violates the single responsibility principle. One function is trying to do a bunch of different expressions, and should be split up into smaller functions that do a single thing. This will make it easier to read and to understand.
+
+2. Refactor:
+
+Matcher.java
+
+public class Matcher {
+    public Matcher() {}
+    public boolean match(int[] expected, int[] actual, int clipLimit, int delta)
+    {
+        clipValues(actual, clipLimit);
+
+        // Check for length differences
+        if (actual.length != expected.length)
+            return false;
+
+        return checkDelta(expected, actual, delta);
+    }
+
+
+    private void clipValues(int[] actual, int clipLimit){
+        // Clip "too-large" values
+        for (int i = 0; i < actual.length; i++)
+            if (actual[i] > clipLimit)
+                actual[i] = clipLimit;
+    }
+
+    private void checkDelta(int[] expected, int[] actual, int delta){
+        // Check that each entry within expected +/- delta
+        for (int i = 0; i < actual.length; i++)
+            if (Math.abs(expected[i] - actual[i]) > delta)
+                return false;
+
+        return true;
+    }
+}
+
+
+
+
+
+
+
+
+
+

@@ -156,3 +156,12 @@ public void valueChanged(ListSelectionEvent)
 
 // plus 11 methods from Object
 }
+
+
+1. This code definitly defies the Single Responsiblility Principle, the minimize dependency principle and the simplicity principle. There are so many things going on in this single class that any change would be horrendus to update due to dependencies, and trying to understand this class would take so much work just to know what is going on. It is like a maze.
+
+2. the only way to get this code to be a little more clean is to factor out some of the responsibility into separate classes. Give each class a single responsibility, and then use those classes so that you know what each class is doing rather than have one large class that does everything. JTable contains a ton of kind of house keeper functions, so these can also be split into respective classes. What specifically can be done just to help out is to separate this class into groups, such as making a class that only deals with all the column data, another one to handle row data, etc. so that you can split this class into multiple class, each with smaller responsibilities that contain related information.
+
+
+
+

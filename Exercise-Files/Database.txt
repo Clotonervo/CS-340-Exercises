@@ -352,3 +352,7 @@ public class Schedule {
     }
 }
 
+1. This class ignores error handling, as a majority of the error that are caught are ignored, and they should at least be logged. Also a DAO class would be better for this because it would help with refactoring out a lot of the funcitonallity into a single class.
+
+2. The best part to refactor these classes is to make an abstract interface ICourseDao. This would house all the database methods that Course uses. Then we would make a concrete CourseDao, and implement all the methods in that class. Then whenever we need to interact with the database with Course information, we would need to pass in a Course object to the CourseDao methods. This would provide great abstraction, and we can replicate this process with the Offering class.
+

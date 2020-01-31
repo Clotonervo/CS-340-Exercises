@@ -83,3 +83,126 @@ public class GameTest extends TestCase {
    }
 }
 
+
+1. This doesn't follow information hiding super well because the board is a public variable, when it should be private, also everything is public. There is also no error handling. It does not abstract the board like it should, and it violates the High Quality abstractions. It is primitive obsessive with the board. Players should not be char, but should be its own class or enum.
+
+
+2. Refactor:         
+
+Game.java
+
+//--------------- Refactored Board class now has some abstraction so that it can error check and have its own functions
+public class Board {
+   private CharArray gameBoard;
+
+   public Board(){
+      gameBoard = new CharArray(9);
+      for (int i = 0; i < 9; i++) {
+         game.set(i, '-');
+      }
+   }
+
+   public Board(String s){
+      gameBoard = new CharArray(9);
+      for (int i = 0; i < 9; i++) {
+         game.set(i, s.charAt(i));
+      }
+   }
+
+   public boardAt(int i){
+      return gameBoard.get(i);
+   }
+
+   public setBoardAt(int i, Player p){
+      if (p = PLAYERX){
+         gameBoard.set(i, 'X');
+
+      }
+      else {
+         gameBoard.set(i, 'O');
+      }
+   }
+}
+
+
+public class Game {
+   public Board board;
+
+   Enum Player = {PLAYERX, PLAYERO}
+
+   public Game(String s) {board = new Board(s);}
+
+   public Game(String s, int position, Player player) {
+      board = new Board(s);
+      board.setCharAt(position, player);
+   }
+
+   public int move(Player player) {
+      for (int i = 0; i < 9; i++) {
+         if (board.boardAt(i) == '-') {
+            Game game = play(i, player);
+            if (game.winner() == player)
+               return i;
+         }
+      }
+
+      for (int i = 0; i < 9; i++) {
+         if (board.boardAt(i) == '-')
+            return i;
+      }
+      return -1;
+   }
+
+   public Game play(int i, Player player) {
+      return new Game(this.board, i, player);
+   }
+
+   public char winner() {
+      if (board.boardAt(0) != '-'
+            && board.boardAt(0) == board.boardAt(1)
+            && board.boardAt(1) == board.boardAt(2))
+         return board.boardAt(0);
+      if (board.boardAt(3) != '-'
+            && board.boardAt(3) == board.boardAt(4)
+            && board.boardAt(4) == board.boardAt(5))
+         return board.boardAt(3);
+      if (board.boardAt(6) != '-'
+            && board.boardAt(6) == board.boardAt(7)
+            && board.boardAt(7) == board.boardAt(8))
+         return board.boardAt(6);
+      return '-';
+   }
+}
+
+GameTest.java
+
+import junit.framework.*;
+
+public class GameTest extends TestCase {
+
+   public GameTest(String s) {super(s);}
+
+   public void testDefaultMove() {
+      Game game = new Game("XOXOX-OXO");
+      assertEquals(5, game.move('X'));
+
+      game = new Game("XOXOXOOX-");
+      assertEquals(8, game.move('O'));
+
+      game = new Game("---------");
+      assertEquals(0, game.move('X'));
+
+      game = new Game("XXXXXXXXX");
+      assertEquals(-1, game.move('X'));
+   }
+
+   public void testFindWinningMove() {
+      Game game = new Game("XO-XX-OOX");
+      assertEquals(5, game.move('X'));
+   }
+   public void testWinConditions() {
+      Game game = new Game("---XXX---");
+      assertEquals('X', game.winner());
+   }
+}
+

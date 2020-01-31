@@ -86,3 +86,83 @@ public class PersonClient extends TestCase {
         assertEquals("Jones, Jenny J", client4(jennyJJones));
     }
 }
+
+
+1. Information hiding, all the variables in the person class are public. Naming conventions for the different functions are also terrible and don't help the programmer understand what is happening. No single responsibility because some of the functions do the exact same thing. Also duplication is an issue with some of the functions. We should remove duplication, and I chose to keep the functions that took in a writer so that they can be printed to any output.
+
+
+2. Refactor:    //Make the names private, which will help with isolated change,
+
+Person.java
+
+public class Person {
+    private String last;
+    private String first;
+    private String middle;
+
+    public Person(String last, String first, String middle) {
+        this.last = last;
+        this.first = first;
+        this.middle = middle;
+    }
+
+    /* Also here we would implement getter and setter methods for each object */
+}
+
+PersonClient.java
+
+// The clients are in one file for convenience;
+// imagine them as non-test methods in separate client classes.
+
+import junit.framework.TestCase;
+
+import java.io.*
+
+public class PersonClient extends TestCase {
+    public PersonClient(String name) {super(name);}
+
+    private void printFirstMiddleLast(Writer out, Person person) throws IOException {    
+        out.write(person.first);
+        out.write(" ");
+        if (person.middle != null) {
+            out.write(person.middle);
+            out.write(" ");
+        }
+        out.write(person.last);
+    }
+
+    private void printLastFirstMiddleName(Writer out, Person person) throws IOException {         
+        out.write(person.getLast());
+        out.write(", ");
+        out.write(person.getFirst());
+        if (person.getMiddle() != null) {
+            out.write(" ");
+            out.write(person.getMiddle());
+        }
+    }
+
+    public void testClients() throws IOException {
+        Person bobSmith = new Person("Smith", "Bob", null);
+        Person jennyJJones = new Person("Jones", "Jenny", "J");
+        StringWriter out = new StringWriter();
+        printFirstMiddleLast(out, bobSmith);
+        assertEquals("Bob Smith", out.toString());
+
+        out = new StringWriter();
+        printFirstMiddleLast(out, jennyJJones);
+        assertEquals("Jenny J Jones", out.toString());
+
+        out = new StringWriter();
+        printLastFirstMiddleName(out, bobSmith);
+        assertEquals("Smith, Bob", out.toString());
+
+        out = new StringWriter();
+        printLastFirstMiddleName(out, jennyJJones);
+        assertEquals("Jones, Jenny J", out.toString());
+    }
+}
+
+
+
+
+

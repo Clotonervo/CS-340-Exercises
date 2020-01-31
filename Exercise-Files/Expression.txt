@@ -9,3 +9,26 @@ if (!((score > 700) ||
    reject();
 else
    accept();
+
+1. This violates the simplicity and must be decomposed in order to separate the problem. By dividing the problem into multiple solutions, it becomes easier to understand. The logic is also confusing, so separating it out helps a programmer understand what is the purpose of this function and make it easier to read. Also elimating numbers helps readabiltiy and changing code in the future.
+
+2. 
+
+int highScore = 700;
+int highIncome = 100000;
+int lowIncome = 40000;
+int lowScore = 500;
+
+if (score > highScore){
+	accept();
+}
+else if (income > highIncome) {
+	accept();
+}
+else if ((income >= lowIncome) && (income <= highIncome) && authorized && (score > lowScore)){
+	accept();
+}
+else {
+	reject();
+}
+

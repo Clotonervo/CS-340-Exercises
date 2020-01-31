@@ -45,3 +45,60 @@ public class CsvWriter {
 		System.out.print('\"');
 	}
 }
+
+
+1. This code only calls System.out.print to print becuase it only prints out to the the system, so this is a single responsibiltiy principle violation. You need to build and return a string, or have the constructor take a stream as an argument, and then have the functions print to there. Here I use the constructor to make an outstream that can be changed with the class to print to different outputs.
+
+2. Refactor:
+
+
+public class CsvWriter {
+	
+	private PrintWriter output;
+
+	public CsvWriter(Outstream out) {
+		output = new Printwriter(out);
+	}
+
+	public void write(String[][] lines) {
+		for (int i = 0; i < lines.length; i++)
+			writeLine(lines[i]);
+	}
+
+	private void writeLine(String[] fields) {
+		if (fields.length == 0)
+			output.println();
+		else {
+			writeField(fields[0]);
+
+			for (int i = 1; i < fields.length; i++) {
+				output.print(",");
+				writeField(fields[i]);
+			}
+			output.println();
+		}
+	}
+
+	private void writeField(String field) {
+		if (field.indexOf(',') != -1 || field.indexOf('\"') != -1)
+			writeQuoted(field);
+		else
+			output.print(field);
+	}
+
+	private void writeQuoted(String field) {
+		output.print('\"');
+		for (int i = 0; i < field.length(); i++) {
+			char c = field.charAt(i);
+			if (c == '\"')
+				output.print("\"\"");
+			else
+				output.print(c);
+		}
+		output.print('\"');
+	}
+}
+
+
+
+
