@@ -1,0 +1,297 @@
+1. A graphical user interface (GUI) library provides a TextBox class that lets the user enter a text value.  The visual appearance of a TextBox changes depending on whether the text currently in the box is valid or invalid.  What constitutes valid text is highly application-specific.
+	//-------------------------------------------------------------------
+	Context contains a TextBoxStrategy and can call isValid(input) on that instance
+
+	...
+
+	void updateAppearance() {
+		if(authenticationStrategy.isValid(buf.toString)){
+			//Update the appearance
+		}
+		else {
+			// Don't
+		}
+	}
+
+	...
+
+
+	interface TextBoxStrategy {
+
+		boolean isValid(String text);
+
+	}
+
+	public class EmailTextBox implements TextBoxStrategy {
+
+		@Override
+		boolean isValid(String text){
+			// Check that the input is a valid email
+		}
+	}
+
+	public class NumberTextBox implements TextBoxStrategy {
+
+		@Override
+		boolean isValid(String text){
+			// Check that the input is valid number
+		}
+	}
+
+
+
+
+2. You want to create an email client class that can be used by programs to send email messages.  When an email message is sent, sometimes the user needs to provide a login name and password, and other times they do not.  When login name and password are required, there are many ways an application might use to obtain this information:
+
+	1. A console application might prompt the user in the console and ask them to enter their login name and password.  Or, it might let the user specify their login name and password as command-line parameters.
+	//-------------------------------------------------------------------
+
+	Context contains a AuthenticationStrategy
+
+	...
+	void authenticateEmail(){
+		if(authenticationDataStrategy.needsLogin()){
+			authenticationDataStrategy.getAuthentication() 
+		}
+		else {
+			//continue becuase doesn't need anything
+		}
+
+	}
+
+	...
+
+
+	interface AuthenticationDataStrategy {
+
+		LoginInformation getAuthentication();
+		boolean needsLogin();
+		LoginInformation prompt();
+	}
+
+	public class LoginCommandLine implements AuthenticationDataStrategy {
+
+		boolean needsLogin(){
+			//Returns true and can print to the console the need for a login name and password
+		}
+
+		LoginInformation getAuthentication(){
+			LoginInformation loginInformation = prompt(); // This will prompt on commandLine and return input
+			return loginInformation;
+		}
+
+		LoginInformation prompt(){
+			//Commandline prompt
+		}
+
+	}
+
+
+	public class LoginNotRequired implements AuthenticationDataStrategy {
+
+		boolean needsLogin(){
+			//Returns false
+		}
+
+		LoginInformation getAuthentication(){
+			//Will never get here
+			return new LoginInformation("username", "password");
+		}
+
+		LoginInformation prompt(){
+			//Commandline prompt
+		}
+	}
+
+
+	2. A graphical application might display a dialog that prompts the user for their login name and password
+	//-------------------------------------------------------------------
+
+	public class LoginDialog implements AuthenticationDataStrategy {
+
+		boolean needsLogin(){
+			//Returns true
+		}
+
+		LoginInformation getAuthentication(){
+			LoginInformation loginInformation = prompt(); // This will prompt with dialogue and return input
+			return loginInformation;
+		}
+
+		LoginInformation prompt(){
+			//Dialogue prompt
+		}
+	}
+
+
+	3. An application might have a configuration file in which the user can specify their login name and password.
+	//-------------------------------------------------------------------
+
+	public class LoginConfig implements AuthenticationDataStrategy {
+		private File file 
+
+		boolean needsLogin(){
+			//Returns true
+		}
+
+		LoginInformation getAuthentication(){
+			LoginInformation loginInformation = prompt(); // This will parse config file
+			return loginInformation;
+		}
+
+		LoginInformation prompt(){
+			//parse config file for information and return it
+		}
+	}
+
+
+
+
+
+3. E-commerce applications need to process online customer orders. The basic process for processing an order is the same for all applications, and includes steps like calculating sales tax, taking payment, and shipping the order.  However, each of these steps will be somewhat different for each application:
+
+	...
+
+	float calculateTax(){
+		return salesTaxStrategy.calculateSalesTax();
+	}
+
+	void payment(String paymentInfo){
+		paymentMethodStrategy.payment() 
+	}
+
+	void shipping(){
+		shippingMethodStrategy.ship()
+	}
+
+	...
+
+
+
+	interface SalesTaxStrategy {
+		float calculateSalesTax(String place);
+	}
+
+	interface PaymentMethodStrategy {
+		void payment(String info);
+	}
+
+	interface ShippingMethodStrategy {
+		void ship();
+	}
+
+
+	1. The algorithm for calculating sales tax will depend on the laws of the state and/or country in which the software is deployed
+	//-------------------------------------------------------------------
+
+
+	public class StateTax implements SalesTaxStrategy {
+		@Override
+		float calculateSalesTax(String state){
+			// Can determine percentage based on the state it is in
+		}
+	}
+
+	public class CountryTax implements SalesTaxStrategy {
+		@Override
+		float calculateSalesTax(String country){
+			// Can determine percentage based on the country it is in
+		}
+	}
+
+
+
+
+
+	2. There are many different ways that a customer can pay: credit card, debit card, PayPal, etc.
+	//-------------------------------------------------------------------
+
+	public class CreditMethod implements PaymentMethodStrategy {
+		@Override
+		void payment(String info){
+			// Use info to get payment for credit card
+		}
+	}
+
+	public class DebitMethod implements PaymentMethodStrategy {
+		@Override
+		void payment(String info){
+			// Use info to get payment for debit card
+		}
+	}
+
+	public class PayPall implements PaymentMethodStrategy {
+		@Override
+		void payment(String info){
+			// Use info to get payment for PayPal
+		}
+	}
+
+
+	3. There are many different shipping options: FedEx, US Postal Service, DHL, etc.
+	//-------------------------------------------------------------------
+
+	public class FedExMethod implements ShippingMethodStrategy {
+		@Override
+		void ship(){
+			// Ship with FedEx
+		}
+	}
+
+	public class UPSMethod implements ShippingMethodStrategy {
+		@Override
+		void ship(){
+			// Ship with US Postal Service
+		}
+	}
+
+	public class DHLMethod implements ShippingMethodStrategy {
+		@Override
+		void ship(){
+			// Ship with DHL
+		}
+	}
+
+
+4. Many video games implement “AI” (artificial intelligence) players that make it possible for human players to play against the computer.  An AI player might use different strategies in deciding what moves it wants to make.  An AI player might even use multiple strategies in combination.  Over time, we will probably think of new strategies that AI players can use to select their moves.
+
+
+	...
+
+	void makeMove(){
+		//Generate moves into a list
+		List<Moves> moves
+		Move nextMove = aIStrategy.selectMove(moves);
+		//
+	}
+
+	...
+
+
+	interface AIPlayerStrategy {
+		Move selectMove(List<Move> moves);
+	}
+
+
+	class HardPlayer implements AIPlayerStrategy {
+		Move selectMove(List<Move> moves){
+			//Select hard move
+		}
+	}
+
+	class BullyPlayer implements AIPlayerStrategy {
+		Move selectMove(List<Move> moves){
+			//Select bullying move
+		}
+	}
+
+
+	class NicePlayer implements AIPlayerStrategy {
+		Move selectMove(List<Move> moves){
+			//Select nicest move
+		}
+	}
+
+
+
+
