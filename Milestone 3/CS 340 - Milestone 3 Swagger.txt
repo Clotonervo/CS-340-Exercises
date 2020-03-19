@@ -1,0 +1,1131 @@
+---
+swagger: "2.0"
+info:
+  version: "2020-03-19T22:14:07Z"
+  title: "tweeter"
+host: "myy7ktcr13.execute-api.us-east-2.amazonaws.com"
+basePath: "/Beta"
+schemes:
+- "https"
+paths:
+  /aliastouser:
+    post:
+      description: "Takes in a user alias and authToken, and returns a the user corresponding\
+        \ to that alias if exists"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "UserAliasRequest"
+        description: "Alias to User request body"
+        required: true
+        schema:
+          $ref: "#/definitions/UserAliasRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/UserAliasResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/UserAliasResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/UserAliasResponse"
+  /feed:
+    post:
+      description: "Takes in a FeedRequest and an authToken and returns the user's\
+        \ feed, paginated by the limit"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "FeedRequest"
+        description: "Get Feed request body model"
+        required: true
+        schema:
+          $ref: "#/definitions/FeedRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/FeedResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/FeedResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/FeedResponse"
+  /followers:
+    post:
+      description: "Takes a FollowerRequest and an authToken and returns the user's\
+        \ followers, paginated by limit"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "FollowerRequest"
+        description: "Get Followers request body"
+        required: true
+        schema:
+          $ref: "#/definitions/FollowerRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/FollowerResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/FollowerResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/FollowerResponse"
+  /following:
+    post:
+      description: "Takes a FollowingRequest and an authToken and returns a list of\
+        \ the user's followees"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "FollowingRequest"
+        description: "Get Following Request body"
+        required: true
+        schema:
+          $ref: "#/definitions/FollowingRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/FollowingResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/FollowingResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/FollowingResponse"
+  /followuser:
+    post:
+      description: "Takes a Follow and an authToken, attempts to follow specified\
+        \ user, if succeeds returns true and if not returns false"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "FollowRequest"
+        description: "Follow user request body"
+        required: true
+        schema:
+          $ref: "#/definitions/FollowRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/FollowResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/FollowResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/FollowResponse"
+  /is-following:
+    post:
+      description: "Takes a Follow and an authToken, and simply verifies that the\
+        \ current user is following the specified user or not, returns true or false"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "IsFollowingRequest"
+        description: "Is following request body"
+        required: true
+        schema:
+          $ref: "#/definitions/IsFollowingRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/IsFollowingResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/IsFollowingResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/IsFollowingResponse"
+  /login:
+    post:
+      description: "Takes a LoginRequest and logs in the user, generates and returns\
+        \ an authToken for the session"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "LoginRequest"
+        description: "Login user request body"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        400:
+          description: "Response when the client sends a bad request, such as bad\
+            \ formatted information"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+  /post:
+    post:
+      description: "Takes a Status and an authToken, and posts the status to the database\
+        \ to be viewed on follower's feeds and the user's story"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "PostRequest"
+        description: "Post status request body"
+        required: true
+        schema:
+          $ref: "#/definitions/PostRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/PostResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/PostResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/PostResponse"
+  /signout:
+    post:
+      description: "Take a SignoutRequest and an authToken, and removes the corresponding\
+        \ authToken from the database and invalidates it"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SignOutRequest"
+        description: "Sign Out request body"
+        required: true
+        schema:
+          $ref: "#/definitions/SignOutRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/SignOutResponse"
+        400:
+          description: "Response when the client sends a bad request, normally due\
+            \ to invalid request types"
+          schema:
+            $ref: "#/definitions/SignOutResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/SignOutResponse"
+  /signup:
+    post:
+      description: "Takes a SignupRequest, which registers the new user into the database\
+        \ and returns the now logged in user with an authToken"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SignUpRequest"
+        description: "Sign up request body"
+        required: true
+        schema:
+          $ref: "#/definitions/SignUpRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/SignUpResponse"
+        400:
+          description: "Response when the client sends a bad request, such as faulty\
+            \ data"
+          schema:
+            $ref: "#/definitions/SignUpResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/SignUpResponse"
+  /story:
+    post:
+      description: "Takes a StoryRequest and an authToken, Simply returns a list of\
+        \ statuses made by the user"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "StoryRequest"
+        description: "Get Story request body"
+        required: true
+        schema:
+          $ref: "#/definitions/StoryRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/StoryResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/StoryResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/StoryResponse"
+  /unfollowuser:
+    post:
+      description: "Takes a Follow and an authToken, attempts to unfollow the user,\
+        \ returning true if successful and false if not"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "UnfollowRequest"
+        description: "Unfollow User request body"
+        required: true
+        schema:
+          $ref: "#/definitions/UnfollowRequest"
+      responses:
+        200:
+          description: "Response when the request is processed successfully"
+          schema:
+            $ref: "#/definitions/UnfollowResponse"
+        400:
+          description: "Response when the client sends a bad request, normally called\
+            \ when given a bad auth token"
+          schema:
+            $ref: "#/definitions/UnfollowResponse"
+        500:
+          description: "Response when something goes wrong on the back end, normally\
+            \ due to database errors"
+          schema:
+            $ref: "#/definitions/UnfollowResponse"
+definitions:
+  UnfollowResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "UnfollowResponse"
+    description: "Response for the UnfollowUser API, returns true if the user was\
+      \ successfully unfollowed"
+  UserAliasRequest:
+    type: "object"
+    properties:
+      userAlias:
+        type: "string"
+        description: "A string that contains the user alias"
+      authToken:
+        type: "string"
+        description: "An authorization token to allow access to data"
+    title: "UserAliasRequest"
+    description: "Request for getting a user from a user alias"
+  IsFollowingResponse:
+    type: "object"
+    properties:
+      isFollowing:
+        type: "boolean"
+        description: "Whether or not the user is following the specified user"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "FollowResponse"
+    description: "Response to the IsFollowing API, returns a boolean of whether or\
+      \ not the user is following the specified user"
+  LoginResponse:
+    type: "object"
+    properties:
+      user:
+        type: "object"
+        description: "User model object"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+      authToken:
+        type: "string"
+        description: "The authorization token for the session"
+    title: "LoginResponse"
+    description: "Response for the LoginUser API, returns the logged in user, and\
+      \ an authToken for the session"
+  FollowingRequest:
+    type: "object"
+    properties:
+      follower:
+        type: "string"
+        description: "User alias"
+      limit:
+        type: "number"
+        description: "The limit of how much info we are requesting"
+      lastFollowee:
+        type: "string"
+        description: "Last following for pagination, alias"
+      authToken:
+        type: "string"
+        description: "Authorization token for api"
+    title: "FollowingRequest"
+    description: "Request for getting following data for a user"
+  FollowerResponse:
+    type: "object"
+    properties:
+      followers:
+        type: "array"
+        description: "List of Users that the current user follows"
+        items:
+          type: "object"
+          description: "User model object"
+          properties:
+            firstName:
+              type: "string"
+              description: "First name of the user"
+            lastName:
+              type: "string"
+              description: "Last name of the user"
+            alias:
+              type: "string"
+              description: "Username for the user"
+            imageUrl:
+              type: "string"
+              description: "Profile picture URL"
+      hasMorePages:
+        type: "boolean"
+        description: "Whether or not there are more pages to be loaded"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "FollowerResponse"
+    description: "Response for getting a list of followers for a user "
+  FollowResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "FollowResponse"
+    description: "Response for FollowUser API, returns either successful or not depending\
+      \ if the other user was followed successfully"
+  FeedResponse:
+    type: "object"
+    properties:
+      statuses:
+        type: "array"
+        description: "List of Statuses from those who the user follows"
+        items:
+          type: "object"
+          description: "Status model object"
+          properties:
+            user:
+              type: "object"
+              description: "User model object"
+              properties:
+                firstName:
+                  type: "string"
+                  description: "First name of the user"
+                lastName:
+                  type: "string"
+                  description: "Last name of the user"
+                alias:
+                  type: "string"
+                  description: "Username for the user"
+                imageUrl:
+                  type: "string"
+                  description: "Profile picture URL"
+            message:
+              type: "string"
+              description: "Message that the status contains"
+            timeStamp:
+              type: "number"
+              description: "Number that keeps track of of the timestamp of the Status"
+            userMentions:
+              type: "array"
+              description: "Array of all the user mentions in a status"
+              items:
+                type: "string"
+            links:
+              type: "array"
+              description: "Array of all the links in a status"
+              items:
+                type: "string"
+      following:
+        type: "array"
+        description: "List of Users that the current user follows"
+        items:
+          type: "object"
+          description: "User model object"
+          properties:
+            firstName:
+              type: "string"
+              description: "First name of the user"
+            lastName:
+              type: "string"
+              description: "Last name of the user"
+            alias:
+              type: "string"
+              description: "Username for the user"
+            imageUrl:
+              type: "string"
+              description: "Profile picture URL"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      hasMorePages:
+        type: "boolean"
+        description: "Whether or not there are more pages to be loaded"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "FeedResponse"
+    description: "The response object from the GetFeed API, returns a list of Statuses\
+      \ from those the user follows."
+  IsFollowingRequest:
+    type: "object"
+    properties:
+      follower:
+        type: "object"
+        description: "User model object, the follower"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      followee:
+        type: "object"
+        description: "User model object, the followee"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      authToken:
+        type: "string"
+        description: "An authorization token to allow access to data"
+    title: "IsFollowingRequest"
+    description: "Request for whether or not a user is following a specified user"
+  LoginRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        description: "A user's username"
+      password:
+        type: "string"
+        description: "Password to login"
+    title: "LoginRequest"
+    description: "Request to log into the Tweeter app, and checks to validate credentials"
+  FollowerRequest:
+    type: "object"
+    properties:
+      followee:
+        type: "string"
+        description: "User alias"
+      limit:
+        type: "number"
+        description: "The limit of how much info we are requesting"
+      lastFollower:
+        type: "string"
+        description: "Last follower for pagination, alias"
+      authToken:
+        type: "string"
+        description: "Authorization token for api"
+    title: "FollowerRequest"
+    description: "Follower Request object for getting followers for a user"
+  SignOutResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "SignOutResponse"
+    description: "Response for the SignOutUser API, returns true if sign out was successful"
+  FeedRequest:
+    type: "object"
+    properties:
+      user:
+        type: "object"
+        description: "User model object"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      lastStatus:
+        type: "object"
+        description: "Status model object"
+        properties:
+          user:
+            type: "object"
+            description: "User model object"
+            properties:
+              firstName:
+                type: "string"
+                description: "First name of the user"
+              lastName:
+                type: "string"
+                description: "Last name of the user"
+              alias:
+                type: "string"
+                description: "Username for the user"
+              imageUrl:
+                type: "string"
+                description: "Profile picture URL"
+          message:
+            type: "string"
+            description: "Message that the status contains"
+          timeStamp:
+            type: "number"
+            description: "Number that keeps track of of the timestamp of the Status"
+          userMentions:
+            type: "array"
+            description: "Array of all the user mentions in a status"
+            items:
+              type: "string"
+          links:
+            type: "array"
+            description: "Array of all the links in a status"
+            items:
+              type: "string"
+      limit:
+        type: "number"
+        description: "Number of Statuses to retrieve"
+      authToken:
+        type: "string"
+        description: "An authorization token to allow access to data"
+    title: "FeedRequest"
+    description: "Request model for retrieving the feed for a user"
+  FollowRequest:
+    type: "object"
+    properties:
+      follower:
+        type: "object"
+        description: "User model object, the follower"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      followee:
+        type: "object"
+        description: "User model object, the followee"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      authToken:
+        type: "string"
+        description: "An authorization token to allow access to data"
+    title: "FollowRequest"
+    description: "Request for a user to follow a different user"
+  UserAliasResponse:
+    type: "object"
+    properties:
+      user:
+        type: "object"
+        description: "User model object"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "UserAliasResponse"
+    description: "Response for the UserAlias API, returns a user if a user with the\
+      \ user alias exists"
+  SignUpResponse:
+    type: "object"
+    properties:
+      user:
+        type: "object"
+        description: "User model object"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+      authToken:
+        type: "string"
+        description: "The authorization token for the session"
+    title: "SignUpResponse"
+    description: "Response to the SignUpUser API, returns the logged in user with\
+      \ an authentication token for the session"
+  PostRequest:
+    type: "object"
+    properties:
+      status:
+        type: "object"
+        description: "Status model object"
+        properties:
+          user:
+            type: "object"
+            description: "User model object"
+            properties:
+              firstName:
+                type: "string"
+                description: "First name of the user"
+              lastName:
+                type: "string"
+                description: "Last name of the user"
+              alias:
+                type: "string"
+                description: "Username for the user"
+              imageUrl:
+                type: "string"
+                description: "Profile picture URL"
+          message:
+            type: "string"
+            description: "Message that the status contains"
+          timeStamp:
+            type: "number"
+            description: "Number that keeps track of of the timestamp of the Status"
+          userMentions:
+            type: "array"
+            description: "Array of all the user mentions in a status"
+            items:
+              type: "string"
+          links:
+            type: "array"
+            description: "Array of all the links in a status"
+            items:
+              type: "string"
+      authToken:
+        type: "string"
+        description: "The authorization token for the session"
+    title: "PostRequest"
+    description: "Request to post a new status to the database, requires authorization\
+      \ token"
+  StoryResponse:
+    type: "object"
+    properties:
+      statusList:
+        type: "array"
+        description: "List of Statuses from those who the user follows"
+        items:
+          type: "object"
+          description: "Status model object"
+          properties:
+            user:
+              type: "object"
+              description: "User model object"
+              properties:
+                firstName:
+                  type: "string"
+                  description: "First name of the user"
+                lastName:
+                  type: "string"
+                  description: "Last name of the user"
+                alias:
+                  type: "string"
+                  description: "Username for the user"
+                imageUrl:
+                  type: "string"
+                  description: "Profile picture URL"
+            message:
+              type: "string"
+              description: "Message that the status contains"
+            timeStamp:
+              type: "number"
+              description: "Number that keeps track of of the timestamp of the Status"
+            userMentions:
+              type: "array"
+              description: "Array of all the user mentions in a status"
+              items:
+                type: "string"
+            links:
+              type: "array"
+              description: "Array of all the links in a status"
+              items:
+                type: "string"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      hasMorePages:
+        type: "boolean"
+        description: "Whether or not there are more pages to be loaded"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "StoryResponse"
+    description: "Response for the GetStory API, requires an authToken"
+  SignUpRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        description: "Username of the user"
+      password:
+        type: "string"
+        description: "Password of the user"
+      firstName:
+        type: "string"
+        description: "First name of the user"
+      lastName:
+        type: "string"
+        description: "Last name of the user"
+      alias:
+        type: "string"
+        description: "Username for the user"
+      image:
+        type: "string"
+        description: "Profile picture URL"
+    title: "SignUpRequest"
+    description: "Request to register as a new user in the Tweeter app"
+  SignOutRequest:
+    type: "object"
+    properties:
+      userAlias:
+        type: "string"
+        description: "A string that contains the user alias"
+    title: "PostResponse"
+    description: "Request that is a simple string that is a user alias, used to invalidate\
+      \ the correct authToken"
+  StoryRequest:
+    type: "object"
+    properties:
+      user:
+        type: "object"
+        description: "User model object"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      lastStatus:
+        type: "object"
+        description: "Status model object"
+        properties:
+          user:
+            type: "object"
+            description: "User model object"
+            properties:
+              firstName:
+                type: "string"
+                description: "First name of the user"
+              lastName:
+                type: "string"
+                description: "Last name of the user"
+              alias:
+                type: "string"
+                description: "Username for the user"
+              imageUrl:
+                type: "string"
+                description: "Profile picture URL"
+          message:
+            type: "string"
+            description: "Message that the status contains"
+          timeStamp:
+            type: "number"
+            description: "Number that keeps track of of the timestamp of the Status"
+          userMentions:
+            type: "array"
+            description: "Array of all the user mentions in a status"
+            items:
+              type: "string"
+          links:
+            type: "array"
+            description: "Array of all the links in a status"
+            items:
+              type: "string"
+      limit:
+        type: "number"
+        description: "Number of Statuses to retrieve"
+      authToken:
+        type: "string"
+        description: "An authorization token to allow access to data"
+    title: "StoryRequest"
+    description: "Request to get the statuses that the current user has posted"
+  UnfollowRequest:
+    type: "object"
+    properties:
+      follower:
+        type: "object"
+        description: "User model object, the follower"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      followee:
+        type: "object"
+        description: "User model object, the followee"
+        properties:
+          firstName:
+            type: "string"
+            description: "First name of the user"
+          lastName:
+            type: "string"
+            description: "Last name of the user"
+          alias:
+            type: "string"
+            description: "Username for the user"
+          imageUrl:
+            type: "string"
+            description: "Profile picture URL"
+      authToken:
+        type: "string"
+        description: "An authorization token to allow access to data"
+    title: "UnfollowRequest"
+    description: "Request for a user to unfollow a user they are currently following"
+  FollowingResponse:
+    type: "object"
+    properties:
+      followees:
+        type: "array"
+        description: "List of Users that the current user follows"
+        items:
+          type: "object"
+          description: "User model object"
+          properties:
+            firstName:
+              type: "string"
+              description: "First name of the user"
+            lastName:
+              type: "string"
+              description: "Last name of the user"
+            alias:
+              type: "string"
+              description: "Username for the user"
+            imageUrl:
+              type: "string"
+              description: "Profile picture URL"
+      hasMorePages:
+        type: "boolean"
+        description: "Whether or not there are more pages to be loaded"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+    title: "FollowingResponse"
+    description: "Response to the GetFollowing function in my API, returns a list\
+      \ of followees"
+  PostResponse:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        description: "Message to display errors if something goes wrong"
+      success:
+        type: "boolean"
+        description: "Whether or not the request was processed correctly"
+    title: "PostResponse"
+    description: "Response for the PostStatus API, returns a true if successfully\
+      \ posted"
