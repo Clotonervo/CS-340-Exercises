@@ -1,16 +1,7 @@
-
-import com.sun.istack.internal.NotNull;
 import models.Follow;
 import models.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
+import java.util.*;
 
 /**
  * A temporary class that generates and returns Follow objects. This class may be removed when the
@@ -77,7 +68,7 @@ public class FollowGenerator {
      * @return the generated {@link Follow} objects.
      */
     @SuppressWarnings("WeakerAccess")
-    public List<Follow> generateFollowsForUsers(@NotNull List<User> users,
+    public List<Follow> generateFollowsForUsers(List<User> users,
                                                 int minFollowersPerUser,
                                                 int maxFollowersPerUser,
                                                 Sort sortOrder) {
@@ -87,21 +78,28 @@ public class FollowGenerator {
             return follows;
         }
 
-        // For each user, generate a random number of followers between the specified min and max
-        Random random = new Random();
-        for(User user : users) {
-            int numbFollowersToGenerate = random.nextInt(
-                    maxFollowersPerUser - minFollowersPerUser) + minFollowersPerUser;
+        assert minFollowersPerUser >= 0 : minFollowersPerUser;
+        assert maxFollowersPerUser < users.size() : maxFollowersPerUser;
 
+        // For each user, generate a random number of followers between the specified min and max
+        for(User user : users) {
+            int numbFollowersToGenerate = 20;
             generateFollowersForUser(numbFollowersToGenerate, user, users, follows);
         }
 
         // Add the test user and make him follow everyone
         User testUser = new User("Test", "User", UserGenerator.MALE_IMAGE_URL);
 
+        int index = 0;
+
         for(User user : users) {
             Follow follow = new Follow(testUser, user);
+            if (index % 2 == 0) {
+                Follow follow2 = new Follow(user, testUser);
+                follows.add(follow2);
+            }
             follows.add(follow);
+            index++;
         }
 
         // Sort by the specified sort order
@@ -137,21 +135,24 @@ public class FollowGenerator {
                 });
                 break;
             default:
+                // It should be impossible to get here
+                assert false;
         }
 
 
         return follows;
     }
 
-    private void generateFollowersForUser(int numbFollowersToGenerate, User user, @NotNull List<User> users, List<Follow> follows) {
+    private void generateFollowersForUser(int numbFollowersToGenerate, User user, List<User> users, List<Follow> follows) {
 
-        Random random = new Random();
         Set<User> selectedFollowers = new HashSet<User>();
+        int i = 1;
 
         while(selectedFollowers.size() < numbFollowersToGenerate) {
             User follower;
             do {
-                follower = users.get(random.nextInt(users.size()));
+                follower = users.get(i % users.size());
+                i++;
             } while (user == follower || selectedFollowers.contains(follower));
 
             selectedFollowers.add(follower);
