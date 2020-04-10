@@ -1,0 +1,52 @@
+Authentication:
+Partition Key: user_alias (String)
+Index: auth_token-index
+
+Other values: expiration (Number)
+
+This database stores the data for authentication. “User_alias” is a string that is the user’s alias. Auth_token is a randomly generated string created for the user. Expiration is a number that keeps track of the time 20 minutes from log in, and is checked every time the auth token is used. 
+
+auth_token-index is used for validating, as it is needed to query the correct auth token and then test its expiration date.
+
+_____________________________________________________________________
+Feed:
+Partition Key: feed_owner (String)
+Sorted by: time_stamp (Number)
+
+Other values: message (string), user_alias (String), user_fname (String), user_lname (String), user_url (String)
+
+This stores the data for user feeds. The feed_owner is a user alias who's feed it is and makes it easy to pull the feed from a single user from the database. The time stamp is used to sort the statuses in the user's feed by time, so you only see the most recent statuses. The rest of the elements (user_alias, message, user_fname, user_lname, user_url) are all elements used to reconstruct the status when pulling information out of the database. They contain the data needed to reconstruct a user, and with it a status. The message is the main body of the status.
+
+_____________________________________________________________________
+Follows:
+Partition Key: follower_handle (String)
+Sorted By: followee_handle (String)
+Index: followee_handle-follower_handle-index
+
+Other values: followee_fname (String), followee_lname (String), followee_url (String), follower_fname (String), follower_lname (String), follower_url (String)
+
+This stores all the data for followers and followees. follower_handle is a user alias, as well is followee_handle. These are used to get follower and following data, and are sorted alphabetically. The other values are used to get the full data of a user when querying, so that we can populate all the required feilds when getting our followers and followees. 
+
+The index followee_handle-follower_handle-index simply just does the same as the normal table, but uses the followee_handle as the partition key sorted by the follower_handle. Both are user aliases, and are sorted alphabetically. This gets the user followers.
+
+_____________________________________________________________________
+Story:
+Partition Key: story_owner (String)
+Sorted by: time_stamp (Number)
+
+Other values: message(String)
+
+This stores story data for a user. story_owner is a user alias of who owns the story, and time_stamp is used to sort from newest to oldest. The message contains the status information, and because each story only has one user as it's owner, we don't need to store other information in this table because we can get the user information from the user table.
+
+_____________________________________________________________________
+User:
+Partition Key: user_alias (String)
+
+Other values: user_fname (String), user_lname (String), user_password (String), user_url (String)
+
+This stores data for users, including user_password which is used to validate login data (it is stored as a hash). user_alias is the username of the user, and the rest are data to create the user from correct login credentials. We can do this because each user_alias is unique, and must be unique.
+
+
+
+
+
